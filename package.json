@@ -1,10 +1,3 @@
-{
-  "dependencies": {
-    "@whiskeysockets/baileys": "^7.0.0-rc14",
-    "mysql2": "^3.24.4",
-    "node-cron": "^4.6.0",
-    "pino": "^10.3.1",
-    "qrcode": "^1.5.4",
-    "qrcode-terminal": "^0.12.0"
-  }
+"scripts": {
+  "start": "node index.js"
 }

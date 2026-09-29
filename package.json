@@ -1,3 +1,16 @@
-"scripts": {
-  "start": "node index.js"
+{
+  "name": "bot_whatsapp",
+  "version": "1.0.0",
+  "description": "Bot multi-agente WhatsApp DAI Pichincha",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.13",
+    "mysql2": "^3.9.2",
+    "node-cron": "^3.0.3",
+    "pino": "^8.19.0",
+    "qrcode": "^1.5.3"
+  }
 }

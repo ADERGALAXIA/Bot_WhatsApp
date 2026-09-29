@@ -1,3 +1,14 @@
+const http = require('http');
+const PORT = process.env.PORT || 3000;
+
+const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Bot DAI Pichincha Activo 24/7\n');
+});
+
+server.listen(PORT, () => {
+    console.log(`Servidor HTTP escuchando en el puerto ${PORT}`);
+});
 const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/baileys');
 const QRCodeImage = require('qrcode');
 const cron = require('node-cron');

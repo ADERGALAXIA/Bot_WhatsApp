@@ -1,5 +1,6 @@
 const http = require('http');
 const PORT = process.env.PORT || 3000;
+const fs = require('fs'); // Importación de fs para el manejo de carpetas
 
 const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
@@ -9,6 +10,7 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
     console.log(`Servidor HTTP escuchando en el puerto ${PORT}`);
 });
+
 const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/baileys');
 const QRCodeImage = require('qrcode');
 const cron = require('node-cron');
@@ -65,11 +67,21 @@ async function iniciarBot(botId) {
 
         if (connection === 'close') {
             const razon = lastDisconnect.error?.output?.statusCode;
+            
             if (razon !== DisconnectReason.loggedOut) {
+                // Si fue un simple corte de internet, solo intenta reconectar
                 await actualizarEstadoBD(botId, 'Reconectando...', '', 'Desconectado', '-');
                 iniciarBot(botId);
             } else {
+                // Si el usuario cerró sesión desde el celular (Deslogueado)
                 await actualizarEstadoBD(botId, 'Deslogueado (Requiere QR)', '', 'Desconectado', '-');
+                console.log(`Línea ${botId} desconectada manualmente. Borrando sesión local...`);
+                
+                // Borra la carpeta específica de esta línea
+                fs.rmSync(`./auth_bot_${botId}`, { recursive: true, force: true }); 
+                
+                console.log(`Sesión auth_bot_${botId} borrada. Generando nuevo QR...`);
+                iniciarBot(botId); // Llama a la función principal para que arranque de cero y cree el QR
             }
         } else if (connection === 'open') {
             // Extrae el número de teléfono del bot que acaba de conectar
